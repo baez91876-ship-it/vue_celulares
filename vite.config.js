@@ -3,7 +3,8 @@ import { defineConfig } from 'vite'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 
 export default defineConfig({
-  base: '/vue_celulares/',
+  // Render sirve en la raíz del dominio; GitHub Pages necesita el subpath del repo.
+  base: process.env.RENDER ? '/' : '/vue_celulares/',
   plugins: [
     vue({ template: { transformAssetUrls } }),
     quasar(),
