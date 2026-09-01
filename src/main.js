@@ -6,5 +6,5 @@ import 'quasar/dist/quasar.css'
 import '@quasar/extras/material-icons/material-icons.css'
 
 createApp(App)
-	.use(Quasar, { plugins: { Notify } })
-	.mount('#app')
+  .use(Quasar, { plugins: { Notify } })
+  .mount('#app')

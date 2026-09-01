@@ -7,7 +7,7 @@
             TALLER DON EFRAÍN
           </q-toolbar-title>
           <div class="text-subtitle2 text-grey-3">
-            Servicio de reparación de equipos móviles (Celulares y Tablets)
+            Servicio de reparación de equipos móviles
           </div>
         </div>
       </q-toolbar>
@@ -15,7 +15,6 @@
 
     <q-page-container>
       <q-page class="q-pa-md max-width-container">
-        
         <section class="row q-col-gutter-md q-mb-lg">
           <div class="col-12 col-sm-4">
             <q-card flat bordered class="bg-blue-1 text-blue-9 border-left-blue">
@@ -25,7 +24,7 @@
               </q-card-section>
             </q-card>
           </div>
-          
+
           <div class="col-12 col-sm-4">
             <q-card flat bordered class="bg-red-1 text-red-9 border-left-red">
               <q-card-section>
@@ -34,7 +33,7 @@
               </q-card-section>
             </q-card>
           </div>
-          
+
           <div class="col-12 col-sm-4">
             <q-card flat bordered class="bg-green-1 text-green-9 border-left-green">
               <q-card-section>
@@ -47,10 +46,10 @@
 
         <section class="row q-col-gutter-md q-mb-lg items-center">
           <div class="col-12 col-sm-8 col-md-9">
-            <q-input 
-              v-model="searchQuery" 
-              outlined 
-              dense 
+            <q-input
+              v-model="searchQuery"
+              outlined
+              dense
               placeholder="Buscar por cliente o equipo..."
               bg-color="white"
             >
@@ -60,12 +59,12 @@
             </q-input>
           </div>
           <div class="col-12 col-sm-4 col-md-3">
-            <q-btn 
-              color="primary" 
-              class="full-width text-weight-bold text-capitalize q-py-sm" 
-              icon="add" 
-              label="Registrar Servicio" 
-              @click="openNewServiceModal" 
+            <q-btn
+              color="primary"
+              class="full-width text-weight-bold text-capitalize q-py-sm"
+              icon="add"
+              label="Registrar Servicio"
+              @click="openNewServiceModal"
             />
           </div>
         </section>
@@ -76,19 +75,19 @@
           </div>
 
           <div class="row q-col-gutter-md">
-            <div 
-              v-for="service in getFilteredServices()" 
-              :key="service.id" 
+            <div
+              v-for="service in getFilteredServices()"
+              :key="service.id"
               class="col-12 col-sm-6 col-md-4"
             >
-              <q-card 
-                flat 
-                bordered 
+              <q-card
+                flat
+                bordered
                 class="service-card q-pa-sm"
                 :class="getCardClass(service)"
               >
-                <div 
-                  v-if="String(service.deviceStatus).toLowerCase() !== 'entregado'" 
+                <div
+                  v-if="String(service.deviceStatus).toLowerCase() !== 'entregado'"
                   class="bg-orange text-white text-center q-py-xs q-mb-sm text-bold rounded-borders text-caption"
                 >
                   ⚠️ Pendiente de Entregar
@@ -96,16 +95,16 @@
 
                 <q-card-section class="q-pt-xs">
                   <div class="row justify-between items-center q-mb-sm">
-                    <q-badge 
-                      :color="getDeviceStatusColor(service.deviceStatus)" 
-                      text-color="white" 
+                    <q-badge
+                      :color="getDeviceStatusColor(service.deviceStatus)"
+                      text-color="white"
                       class="text-bold q-py-xs q-px-sm"
                     >
                       {{ getStatusLabel(service.deviceStatus) }}
                     </q-badge>
-                    <q-badge 
-                      :color="getPaymentStatusColor(service.paymentStatus)" 
-                      text-color="white" 
+                    <q-badge
+                      :color="getPaymentStatusColor(service.paymentStatus)"
+                      text-color="white"
                       class="text-bold q-py-xs q-px-sm"
                     >
                       {{ service.paymentStatus.toUpperCase() }}
@@ -122,7 +121,7 @@
                     <div><strong>Técnico:</strong> {{ service.technician }}</div>
                     <div><strong>Método de pago:</strong> {{ service.paymentMethod }}</div>
                     <div><strong>Precio Total:</strong> ${{ Number(service.price).toLocaleString() }}</div>
-                    
+
                     <div v-if="String(service.paymentStatus).toLowerCase() === 'abono'" class="bg-amber-1 q-pa-sm rounded-borders q-mt-xs text-grey-9">
                       <div v-if="Number(service.advancePayment1) > 0" class="text-caption">
                         • <strong>Abono 1:</strong> ${{ Number(service.advancePayment1).toLocaleString() }}
@@ -137,7 +136,7 @@
                     </div>
 
                     <div v-if="String(service.paymentStatus).toLowerCase() === 'pendiente' || (String(service.paymentStatus).toLowerCase() === 'abono' && getPendingBalance(service) > 0)" class="q-mt-xs">
-                      <strong>Saldo Pendiente:</strong> 
+                      <strong>Saldo Pendiente:</strong>
                       <span class="text-red text-weight-bold">
                         ${{ getPendingBalance(service).toLocaleString() }}
                       </span>
@@ -187,49 +186,49 @@
 
             <q-card-section class="q-pt-md">
               <q-form @submit.prevent="saveService" class="q-gutter-y-md">
-                <q-input 
-                  v-model="form.clientName" 
-                  outlined 
-                  label="Nombre del cliente" 
+                <q-input
+                  v-model="form.clientName"
+                  outlined
+                  label="Nombre del cliente"
                   :error="!!errors.clientName"
                   :error-message="errors.clientName"
                   dense
                 />
 
-                <q-input 
-                  v-model="form.deviceBrandModel" 
-                  outlined 
-                  label="Marca y modelo del equipo" 
+                <q-input
+                  v-model="form.deviceBrandModel"
+                  outlined
+                  label="Marca y modelo del equipo"
                   :error="!!errors.deviceBrandModel"
                   :error-message="errors.deviceBrandModel"
                   dense
                 />
 
-                <q-select 
-                  v-model="form.repairType" 
-                  outlined 
-                  :options="REPAIR_OPTIONS" 
-                  label="Tipo de reparación" 
+                <q-select
+                  v-model="form.repairType"
+                  outlined
+                  :options="REPAIR_OPTIONS"
+                  label="Tipo de reparación"
                   :error="!!errors.repairType"
                   :error-message="errors.repairType"
                   dense
                 />
 
-                <q-select 
-                  v-model="form.technician" 
-                  outlined 
-                  :options="TECHNICIAN_OPTIONS" 
-                  label="Técnico que atendió" 
+                <q-select
+                  v-model="form.technician"
+                  outlined
+                  :options="TECHNICIAN_OPTIONS"
+                  label="Técnico que atendió"
                   :error="!!errors.technician"
                   :error-message="errors.technician"
                   dense
                 />
 
-                <q-input 
-                  v-model="form.receptionDate" 
-                  outlined 
-                  type="datetime-local" 
-                  label="Fecha y hora de recepción" 
+                <q-input
+                  v-model="form.receptionDate"
+                  outlined
+                  type="datetime-local"
+                  label="Fecha y hora de recepción"
                   stack-label
                   :error="!!errors.receptionDate"
                   :error-message="errors.receptionDate"
@@ -238,23 +237,23 @@
 
                 <div class="row q-col-gutter-sm">
                   <div class="col-12 col-sm-6">
-                    <q-input 
-                      v-model.number="form.price" 
-                      outlined 
-                      type="number" 
-                      min="0" 
-                      label="Precio total" 
+                    <q-input
+                      v-model.number="form.price"
+                      outlined
+                      type="number"
+                      min="0"
+                      label="Precio total"
                       :error="!!errors.price"
                       :error-message="errors.price"
                       dense
                     />
                   </div>
                   <div class="col-12 col-sm-6">
-                    <q-select 
-                      v-model="form.paymentMethod" 
-                      outlined 
-                      :options="PAYMENT_METHODS" 
-                      label="Método de pago" 
+                    <q-select
+                      v-model="form.paymentMethod"
+                      outlined
+                      :options="PAYMENT_METHODS"
+                      label="Método de pago"
                       :error="!!errors.paymentMethod"
                       :error-message="errors.paymentMethod"
                       dense
@@ -264,22 +263,22 @@
 
                 <div class="row q-col-gutter-sm">
                   <div class="col-12 col-sm-6">
-                    <q-select 
-                      v-model="form.paymentStatus" 
-                      outlined 
-                      :options="PAYMENT_STATUSES" 
-                      label="Estado del pago" 
+                    <q-select
+                      v-model="form.paymentStatus"
+                      outlined
+                      :options="PAYMENT_STATUSES"
+                      label="Estado del pago"
                       :error="!!errors.paymentStatus"
                       :error-message="errors.paymentStatus"
                       dense
                     />
                   </div>
                   <div class="col-12 col-sm-6">
-                    <q-select 
-                      v-model="form.deviceStatus" 
-                      outlined 
-                      :options="DEVICE_STATUSES" 
-                      label="Estado del equipo" 
+                    <q-select
+                      v-model="form.deviceStatus"
+                      outlined
+                      :options="DEVICE_STATUSES"
+                      label="Estado del equipo"
                       :error="!!errors.deviceStatus"
                       :error-message="errors.deviceStatus"
                       dense
@@ -290,24 +289,24 @@
                 <div v-if="String(form.paymentStatus).toLowerCase() === 'abono'" class="q-mt-sm">
                   <div class="row q-col-gutter-sm">
                     <div class="col-12 col-sm-6">
-                      <q-input 
-                        v-model.number="form.advancePayment1" 
-                        outlined 
-                        type="number" 
-                        min="0" 
-                        label="Primer abono" 
+                      <q-input
+                        v-model.number="form.advancePayment1"
+                        outlined
+                        type="number"
+                        min="0"
+                        label="Primer abono"
                         :error="!!errors.advancePayment1"
                         :error-message="errors.advancePayment1"
                         dense
                       />
                     </div>
                     <div class="col-12 col-sm-6">
-                      <q-input 
-                        v-model.number="form.advancePayment2" 
-                        outlined 
-                        type="number" 
-                        min="0" 
-                        label="Segundo abono (Opcional)" 
+                      <q-input
+                        v-model.number="form.advancePayment2"
+                        outlined
+                        type="number"
+                        min="0"
+                        label="Segundo abono (Opcional)"
                         :error="!!errors.advancePayment2"
                         :error-message="errors.advancePayment2"
                         dense
@@ -315,7 +314,7 @@
                     </div>
                   </div>
                   <div v-if="form.price" class="text-caption text-primary text-italic q-mt-xs">
-                    Total abonado: ${{ (Number(form.advancePayment1 || 0) + Number(form.advancePayment2 || 0)).toLocaleString() }} | 
+                    Total abonado: ${{ (Number(form.advancePayment1 || 0) + Number(form.advancePayment2 || 0)).toLocaleString() }} |
                     Saldo restante: ${{ Math.max(0, form.price - (Number(form.advancePayment1 || 0) + Number(form.advancePayment2 || 0))).toLocaleString() }}
                   </div>
                 </div>
@@ -331,11 +330,11 @@
                   />
                 </div>
 
-                <q-input 
-                  v-model="form.observations" 
-                  outlined 
-                  type="textarea" 
-                  label="Observaciones adicionales (Opcional)" 
+                <q-input
+                  v-model="form.observations"
+                  outlined
+                  type="textarea"
+                  label="Observaciones adicionales (Opcional)"
                   dense
                   rows="3"
                 />
@@ -366,7 +365,6 @@
             </q-card-actions>
           </q-card>
         </q-dialog>
-
       </q-page>
     </q-page-container>
   </q-layout>
@@ -411,8 +409,8 @@ const form = ref({
   deviceStatus: 'Recibido',
   rating: 0,
   observations: '',
-  advancePayment1: 0, 
-  advancePayment2: 0  
+  advancePayment1: 0,
+  advancePayment2: 0
 })
 
 const errors = ref({
@@ -487,8 +485,8 @@ const getPendingBalance = (service) => {
 
 const getStats = () => {
   let pendingCount = 0
-  let totalCollected = 0 
-  let totalPendingBalance = 0 
+  let totalCollected = 0
+  let totalPendingBalance = 0
   let activeRepairs = 0
 
   services.value.forEach(item => {
@@ -522,7 +520,7 @@ const getStats = () => {
 const getFilteredServices = () => {
   if (!searchQuery.value) return services.value
   const query = searchQuery.value.toLowerCase()
-  return services.value.filter(service => 
+  return services.value.filter(service =>
     (service.clientName && service.clientName.toLowerCase().includes(query)) ||
     (service.deviceBrandModel && service.deviceBrandModel.toLowerCase().includes(query))
   )
@@ -531,16 +529,22 @@ const getFilteredServices = () => {
 const getLocalDatetime = () => {
   const now = new Date()
   const offset = now.getTimezoneOffset() * 60000
-  const localISOTime = (new Date(now - offset)).toISOString().slice(0, 16)
-  return localISOTime
+  return new Date(now - offset).toISOString().slice(0, 16)
 }
 
 const clearErrors = () => {
   errors.value = {
-    clientName: '', deviceBrandModel: '', repairType: '',
-    technician: '', receptionDate: '', price: '',
-    paymentMethod: '', paymentStatus: '', deviceStatus: '',
-    advancePayment1: '', advancePayment2: ''
+    clientName: '',
+    deviceBrandModel: '',
+    repairType: '',
+    technician: '',
+    receptionDate: '',
+    price: '',
+    paymentMethod: '',
+    paymentStatus: '',
+    deviceStatus: '',
+    advancePayment1: '',
+    advancePayment2: ''
   }
 }
 
@@ -549,31 +553,40 @@ const validateForm = () => {
   clearErrors()
 
   if (!form.value.clientName) {
-    errors.value.clientName = 'El nombre del cliente es obligatorio'; isValid = false
+    errors.value.clientName = 'El nombre del cliente es obligatorio'
+    isValid = false
   }
   if (!form.value.deviceBrandModel) {
-    errors.value.deviceBrandModel = 'La marca y modelo del equipo son obligatorios'; isValid = false
+    errors.value.deviceBrandModel = 'La marca y modelo del equipo son obligatorios'
+    isValid = false
   }
   if (!form.value.repairType) {
-    errors.value.repairType = 'Debe seleccionar el tipo de reparación'; isValid = false
+    errors.value.repairType = 'Debe seleccionar el tipo de reparación'
+    isValid = false
   }
   if (!form.value.technician) {
-    errors.value.technician = 'Debe indicar el técnico que atiende'; isValid = false
+    errors.value.technician = 'Debe indicar el técnico que atiende'
+    isValid = false
   }
   if (!form.value.receptionDate) {
-    errors.value.receptionDate = 'La fecha de recepción es obligatoria'; isValid = false
+    errors.value.receptionDate = 'La fecha de recepción es obligatoria'
+    isValid = false
   }
   if (form.value.price === null || form.value.price === undefined || form.value.price < 0) {
-    errors.value.price = 'El precio debe ser igual o mayor a cero'; isValid = false
+    errors.value.price = 'El precio debe ser igual o mayor a cero'
+    isValid = false
   }
   if (!form.value.paymentMethod) {
-    errors.value.paymentMethod = 'Seleccione el método de pago'; isValid = false
+    errors.value.paymentMethod = 'Seleccione el método de pago'
+    isValid = false
   }
   if (!form.value.paymentStatus) {
-    errors.value.paymentStatus = 'Seleccione el estado del pago'; isValid = false
+    errors.value.paymentStatus = 'Seleccione el estado del pago'
+    isValid = false
   }
   if (!form.value.deviceStatus) {
-    errors.value.deviceStatus = 'Seleccione el estado del equipo'; isValid = false
+    errors.value.deviceStatus = 'Seleccione el estado del equipo'
+    isValid = false
   }
 
   const payStatus = String(form.value.paymentStatus || '').toLowerCase()
@@ -583,16 +596,20 @@ const validateForm = () => {
     const totalAbonado = abono1 + abono2
 
     if (abono1 < 0) {
-      errors.value.advancePayment1 = 'El abono no puede ser un valor negativo'; isValid = false
+      errors.value.advancePayment1 = 'El abono no puede ser un valor negativo'
+      isValid = false
     }
     if (abono2 < 0) {
-      errors.value.advancePayment2 = 'El abono no puede ser un valor negativo'; isValid = false
+      errors.value.advancePayment2 = 'El abono no puede ser un valor negativo'
+      isValid = false
     }
     if (abono1 === 0 && abono2 === 0) {
-      errors.value.advancePayment1 = 'Se debe ingresar al menos el primer abono válido'; isValid = false
+      errors.value.advancePayment1 = 'Se debe ingresar al menos el primer abono válido'
+      isValid = false
     }
     if (totalAbonado > form.value.price) {
-      errors.value.advancePayment2 = 'La suma de ambos abonos no puede ser mayor al precio total de reparación'; isValid = false
+      errors.value.advancePayment2 = 'La suma de ambos abonos no puede ser mayor al precio total de reparación'
+      isValid = false
     }
   }
 
@@ -608,7 +625,7 @@ const openNewServiceModal = () => {
     deviceBrandModel: '',
     repairType: '',
     technician: '',
-    receptionDate: getLocalDatetime(), 
+    receptionDate: getLocalDatetime(),
     price: 0,
     paymentMethod: 'Efectivo',
     paymentStatus: 'Pendiente',
@@ -703,6 +720,7 @@ const deleteService = () => {
   justify-content: space-between;
   height: 100%;
 }
+
 @media screen and (max-width: 768px) {
   .service-card {
     flex-direction: column;
@@ -715,10 +733,6 @@ const deleteService = () => {
     margin-right: 0;
     border-left: none;
     border-radius: 5px;
-     }
+  }
 }
 </style>
-
-<!-- iniciar proyecto
-cd vite
-npm run dev -->
