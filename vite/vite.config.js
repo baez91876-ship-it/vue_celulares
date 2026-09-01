@@ -3,10 +3,9 @@ import { defineConfig } from 'vite'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 
 // https://vite.dev/config/
-// Para GitHub Pages: cambiar base a '/taller-servicios/' (nombre del repo)
-// Para Vercel/Render: mantener base en '/'
+// GitHub Pages requiere la base con el nombre exacto del repositorio.
 export default defineConfig({
-  base: '/',  // Cambiar a '/tu-repo-name/' si despliega en GitHub Pages
+  base: '/vue_celulares/',
   plugins: [
     vue({ template: { transformAssetUrls } }),
     quasar(),
